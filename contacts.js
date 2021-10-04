@@ -5,26 +5,24 @@ const shortid = require("shortid");
 const contactsPath = path.resolve("./db/contacts.json");
 
 function listContacts() {
-  // ...твой код
   fs.readFile(contactsPath, "utf-8", (err, data) => {
-    console.log(data);
+    const processedData = normalizeData(data);
+    console.log(processedData);
   });
 }
 
 function getContactById(contactId = 9) {
-  // ...твой код
-  fs.readFile(contactsPath, "utf-8", (err, data) => {
-    const normalizeData = JSON.parse(data);
-    const filterName = normalizeData.filter(({ id }) => id === contactId);
+  fs.readFile(contactsPath, (err, data) => {
+    const processedData = normalizeData(data);
+    const filterName = processedData.filter(({ id }) => id === contactId);
     console.log(filterName);
   });
 }
 
 function removeContact(contactId = 3) {
-  // ...твой код
-  fs.readFile(contactsPath, "utf-8", (err, data) => {
-    const normalizeData = JSON.parse(data);
-    const newContacts = normalizeData.filter(({ id }) => id !== contactId);
+  fs.readFile(contactsPath, (err, data) => {
+    const processedData = normalizeData(data);
+    const newContacts = processedData.filter(({ id }) => id !== contactId);
     fs.writeFile(contactsPath, JSON.stringify(newContacts), (err) => {
       if (err) {
         console.log("ошибка удаления контакта");
