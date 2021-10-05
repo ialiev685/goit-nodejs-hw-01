@@ -12,7 +12,9 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "commander": "^8.2.0",
     "nodemon": "^2.0.13",
-    "shortid": "^2.2.16"
+    "shortid": "^2.2.16",
+    "yargs": "^17.2.1"
   }
 }

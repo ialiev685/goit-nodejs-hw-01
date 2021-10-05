@@ -5,30 +5,32 @@ const shortid = require("shortid");
 const contactsPath = path.resolve("./db/contacts.json");
 
 function listContacts() {
-  fs.readFile(contactsPath, "utf-8", (err, data) => {
-    const processedData = normalizeData(data);
-    console.log(processedData);
+  fs.readFile(contactsPath, (err, data) => {
+    // const processedData = normalizeData(data);
+    console.table(normalizeData(data));
   });
 }
 
-function getContactById(contactId = 9) {
+function getContactById(contactId) {
   fs.readFile(contactsPath, (err, data) => {
-    const processedData = normalizeData(data);
-    const filterName = processedData.filter(({ id }) => id === contactId);
-    console.log(filterName);
+    // const processedData = normalizeData(data);
+    const filterName = normalizeData(data).filter(({ id }) => id === contactId);
+    console.table(filterName);
   });
 }
 
-function removeContact(contactId = 3) {
+function removeContact(contactId) {
   fs.readFile(contactsPath, (err, data) => {
-    const processedData = normalizeData(data);
-    const newContacts = processedData.filter(({ id }) => id !== contactId);
+    // const processedData = normalizeData(data);
+    const newContacts = normalizeData(data).filter(
+      ({ id }) => id !== contactId
+    );
     fs.writeFile(contactsPath, JSON.stringify(newContacts), (err) => {
       if (err) {
-        console.log("ошибка удаления контакта");
-      } else {
-        console.log("контакт успешно удален");
+        console.log("ошибка удаления контакта.");
+        return;
       }
+      console.log(`контакт под id=${contactId} успешно удален.`);
     });
   });
 }
@@ -40,10 +42,10 @@ function addContact(name, email, phone) {
     const updateContacts = JSON.stringify([...processedData, newContact]);
     fs.writeFile(contactsPath, updateContacts, (err) => {
       if (err) {
-        console.log("ошибка создания контакта");
-      } else {
-        console.log("контакт успешно создан");
+        console.log("ошибка в создании контакта.");
+        return;
       }
+      console.log(`контакт под именем '${name}' успешно создан.`);
     });
   });
 }
