@@ -6,14 +6,12 @@ const contactsPath = path.resolve("./db/contacts.json");
 
 function listContacts() {
   fs.readFile(contactsPath, (err, data) => {
-    // const processedData = normalizeData(data);
     console.table(normalizeData(data));
   });
 }
 
 function getContactById(contactId) {
   fs.readFile(contactsPath, (err, data) => {
-    // const processedData = normalizeData(data);
     const filterName = normalizeData(data).filter(({ id }) => id === contactId);
     console.table(filterName);
   });
@@ -21,7 +19,6 @@ function getContactById(contactId) {
 
 function removeContact(contactId) {
   fs.readFile(contactsPath, (err, data) => {
-    // const processedData = normalizeData(data);
     const newContacts = normalizeData(data).filter(
       ({ id }) => id !== contactId
     );
