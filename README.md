@@ -1,4 +1,4 @@
-# goit-node-hw-01
+# goit-node-hw
 
 node index.js --action list
 https://imgur.com/8Y4qV6t.png
