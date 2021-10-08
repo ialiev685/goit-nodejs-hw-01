@@ -1,50 +1,52 @@
-const fs = require("fs");
+const fs = require("fs").promises;
 const path = require("path");
 
 const shortid = require("shortid");
-const contactsPath = path.resolve("./db/contacts.json");
+const contactsPath = path.join(__dirname, "db", "contacts.json");
 
-function listContacts() {
-  fs.readFile(contactsPath, (err, data) => {
+async function listContacts() {
+  try {
+    const data = await fs.readFile(contactsPath);
     console.table(normalizeData(data));
-  });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function getContactById(contactId) {
-  fs.readFile(contactsPath, (err, data) => {
+async function getContactById(contactId) {
+  try {
+    const data = await fs.readFile(contactsPath);
     const filterName = normalizeData(data).filter(({ id }) => id === contactId);
     console.table(filterName);
-  });
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function removeContact(contactId) {
-  fs.readFile(contactsPath, (err, data) => {
+async function removeContact(contactId) {
+  try {
+    const data = await fs.readFile(contactsPath);
     const newContacts = normalizeData(data).filter(
       ({ id }) => id !== contactId
     );
-    fs.writeFile(contactsPath, JSON.stringify(newContacts), (err) => {
-      if (err) {
-        console.log("ошибка удаления контакта.");
-        return;
-      }
-      console.log(`контакт под id=${contactId} успешно удален.`);
-    });
-  });
+    await fs.writeFile(contactsPath, JSON.stringify(newContacts));
+    console.log(`контакт под id=${contactId} успешно удален.`);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
-function addContact(name, email, phone) {
+async function addContact(name, email, phone) {
   const newContact = { id: shortid.generate(), name, email, phone };
-  fs.readFile(contactsPath, (err, data) => {
+  try {
+    const data = await fs.readFile(contactsPath);
     const processedData = normalizeData(data);
     const updateContacts = JSON.stringify([...processedData, newContact]);
-    fs.writeFile(contactsPath, updateContacts, (err) => {
-      if (err) {
-        console.log("ошибка в создании контакта.");
-        return;
-      }
-      console.log(`контакт под именем '${name}' успешно создан.`);
-    });
-  });
+    await fs.writeFile(contactsPath, updateContacts);
+    console.log(`контакт под именем '${name}' успешно создан.`);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 function normalizeData(data) {
